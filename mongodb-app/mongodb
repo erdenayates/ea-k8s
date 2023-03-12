@@ -1,0 +1,18 @@
+db.dropUser("admin", {w: "majority", wtimeout: 5000})
+
+db.createUser({
+    user: "admin",
+    pwd: "admin",
+    roles: [
+      { role: "userAdminAnyDatabase", db: "admin" },
+      { role: "dbAdminAnyDatabase", db: "admin" }
+    ]
+  })
+
+  use users
+
+  db.createUser({
+    user: "usersAdmin",
+    pwd: "usersAdmin",
+    roles: [ { role: "readWrite", db: "users" } ]
+  })
