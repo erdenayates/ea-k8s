@@ -11,7 +11,7 @@ const port = 3000;
 app.use(cors());
 
 // Connect to MongoDB with admin-user credentials
-mongoose.connect('mongodb://usersAdmin:usersAdmin@34.29.34.239:27017/users', {
+mongoose.connect('mongodb://XYZXYZ:XYZXYZ@XYZXYZ:27017/users', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
@@ -29,7 +29,7 @@ const User = mongoose.model('User', userSchema);
 // Define a route to get all users
 app.get('/users', async (req, res) => {
   try {
-    const client = await MongoClient.connect('mongodb://XYZXYZ:XYZXYZ@34.29.34.239:27017/users', { useNewUrlParser: true });
+    const client = await MongoClient.connect('mongodb://XYZXYZ:XYZXYZ@XYZXYZ:27017/users', { useNewUrlParser: true });
     const database = client.db('users');
     const collection = database.collection('users');
     const users = await collection.find().toArray();
