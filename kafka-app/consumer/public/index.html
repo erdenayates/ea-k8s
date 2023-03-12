@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kafka Consumer</title>
+  <style>
+    /* Main color */
+    :root {
+      --main-green: #4CAF50;
+    }
+
+    /* Background and font colors */
+    body {
+      font-family: Arial, sans-serif;
+      color: #333;
+      background-color: #f5f5f5;
+    }
+
+    /* Page header */
+    h1 {
+      text-align: center;
+      margin-top: 50px;
+      color: var(--main-green);
+    }
+
+    /* Table styles */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 50px;
+    }
+
+    th {
+      text-align: left;
+      background-color: var(--main-green);
+      color: #fff;
+      font-weight: bold;
+      padding: 10px;
+    }
+
+    td {
+      border: 1px solid #ddd;
+      padding: 10px;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    tbody tr:hover {
+      background-color: #ddd;
+    }
+  </style>
+</head>
+<body>
+  <h1>Kafka Consumer</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Topic</th>
+        <th>Partition</th>
+        <th>Offset</th>
+        <th>Key</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody id="table-body"></tbody>
+  </table>
+  <script>
+    const socket = new WebSocket(`ws://${window.location.hostname}:${window.location.port}`);
+    socket.onmessage = function (event) {
+      try {
+        const data = JSON.parse(event.data);
+        const row = document.createElement('tr');
+        const topicCell = document.createElement('td');
+        const partitionCell = document.createElement('td');
+        const offsetCell = document.createElement('td');
+        const keyCell = document.createElement('td');
+        const valueCell = document.createElement('td');
+
+        topicCell.textContent = data.topic;
+        partitionCell.textContent = data.partition;
+        offsetCell.textContent = data.offset;
+        keyCell.textContent = data.key === null ? 'N/A' : data.key;
+        valueCell.textContent = data.value === null ? 'N/A' : data.value;
+
+        row.appendChild(topicCell);
+        row.appendChild(partitionCell);
+        row.appendChild(offsetCell);
+        row.appendChild(keyCell);
+        row.appendChild(valueCell);
+
+        document.querySelector('#table-body').appendChild(row);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    socket.onerror = function (event) {
+      console.error('WebSocket error', event);
+    };
+    socket.onclose = function (event) {
+      console.warn('WebSocket closed', event);
+    };
+  </script>
+</body>
+</html>
+
