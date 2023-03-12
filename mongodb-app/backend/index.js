@@ -1,17 +1,16 @@
-const newrelic = require('newrelic');
 const express = require('express');
 const cors = require('cors');
 const { MongoClient } = require('mongodb');
 const mongoose = require('mongoose');
 
 const app = express();
-const port = 3000;
+const port = 3002;
 
 // Enable CORS for all routes
 app.use(cors());
 
 // Connect to MongoDB with admin-user credentials
-mongoose.connect('mongodb://XYZXYZ:XYZXYZ@XYZXYZ:27017/users', {
+mongoose.connect('mongodb://usersAdmin:usersAdmin@34.29.34.239:27017/users', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
@@ -29,7 +28,7 @@ const User = mongoose.model('User', userSchema);
 // Define a route to get all users
 app.get('/users', async (req, res) => {
   try {
-    const client = await MongoClient.connect('mongodb://XYZXYZ:XYZXYZ@XYZXYZ:27017/users', { useNewUrlParser: true });
+    const client = await MongoClient.connect('mongodb://usersAdmin:usersAdmin@34.29.34.239:27017/users', { useNewUrlParser: true });
     const database = client.db('users');
     const collection = database.collection('users');
     const users = await collection.find().toArray();

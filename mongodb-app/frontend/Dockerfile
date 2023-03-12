@@ -8,4 +8,4 @@ COPY index.html /usr/src/app/
 COPY script.js /usr/src/app/
 COPY style.css /usr/share/nginx/html/
 
-EXPOSE 80
+EXPOSE 81

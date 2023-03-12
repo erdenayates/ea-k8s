@@ -1,5 +1,5 @@
 // Fetch the user data from the backend
-axios.get('http://XYZXYZ:3000/users')
+axios.get('http://3.211.121.172:3002/users')
   .then(response => {
     // Populate the table with the user data
     const userTable = document.getElementById('user-table');

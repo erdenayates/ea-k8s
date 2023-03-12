@@ -1,10 +1,10 @@
 from kafka import KafkaProducer
 from flask import Flask, request, render_template
 
-topic = 'msk101'
+topic = 'msk-topic'
 
 producer = KafkaProducer(bootstrap_servers=[
-                         'b-1.erdenaymks.dibkfn.c13.kafka.us-east-1.amazonaws.com:9092', 'b-2.erdenaymks.dibkfn.c13.kafka.us-east-1.amazonaws.com:9092'])
+                         'b-2.eamskcluster.92wrgm.c13.kafka.us-east-1.amazonaws.com:9092','b-1.eamskcluster.92wrgm.c13.kafka.us-east-1.amazonaws.com:9092'])
 
 app = Flask(__name__)
 
