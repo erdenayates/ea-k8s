@@ -4,7 +4,7 @@ from flask import Flask, request, render_template
 topic = 'msk-topic'
 
 producer = KafkaProducer(bootstrap_servers=[
-                         'b-1.erdenaymskcluster.9w4zfk.c2.kafka.us-west-2.amazonaws.com:9092,b-2.erdenaymskcluster.9w4zfk.c2.kafka.us-west-2.amazonaws.com:9092:9092'])
+                         'b-1.erdenaymks.dibkfn.c13.kafka.us-east-1.amazonaws.com:9092', 'b-2.erdenaymks.dibkfn.c13.kafka.us-east-1.amazonaws.com:9092'])
 
 app = Flask(__name__)
 
