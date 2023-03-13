@@ -1,0 +1,60 @@
+pipeline {
+    agent {
+        label 'ubuntu-jenkins'
+    }
+
+    environment {
+        containerName = sh(script: 'echo ${JOB_NAME} | tr \'[:upper:]\' \'[:lower:]\' | tr \'_\' \'-\'', returnStdout: true).trim()
+        // Extract container name from job name, convert to lowercase, and replace underscores with hyphens
+        slackUrl = credentials('slack-webhook-url')
+    }
+
+    stages {
+        stage('Kill container') {
+            steps {
+                sh "docker kill ${containerName} || true" // Ignore errors if container doesn't exist
+            }
+        }
+        stage('Remove container') {
+            steps {
+                sh "docker rm ${containerName} || true" // Ignore errors if container doesn't exist
+            }
+        }
+        stage('Build image') {
+            steps {
+                sh "docker build -t ${containerName} /home/ubuntu/ea-k8s/mongodb-app/frontend"
+            }
+        }
+        stage('Run container') {
+            steps {
+                sh "docker run -d -p 81:81 --name ${containerName} ${containerName}"
+            }
+        }
+    }
+
+    post {
+        success {
+            slackSend color: '#36a64f', message: "Container (${containerName}) update succeeded!", slackUrl: slackUrl
+        }
+        failure {
+            slackSend color: '#ff0000', message: "Container (${containerName}) update failed!", slackUrl: slackUrl
+        }
+    }
+}
+
+def slackSend(def options = []) {
+    def slackUrl = options.get('slackUrl', '')
+    def color = options.get('color', '#36a64f')
+    def message = options.get('message', '')
+    
+    sh """
+        curl -X POST -H 'Content-type: application/json' --data '{
+            \"attachments\": [
+                {
+                    \"color\": \"$color\",
+                    \"text\": \"$message\"
+                }
+            ]
+        }' $slackUrl
+    """
+}
