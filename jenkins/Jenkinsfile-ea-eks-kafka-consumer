@@ -10,6 +10,16 @@ pipeline {
     }
 
     stages {
+        stage('Git repository deletion') {
+            steps {
+                sh "rm -rf /home/ubuntu/workspace/ea-eks-kafka-consumer/ea-k8s"
+            }
+        }
+        stage('Git repository clone') {
+            steps {
+                sh "git clone git@github.com:erdenayates/ea-k8s.git"
+            }
+        }
         stage('Kill container') {
             steps {
                 sh "docker kill ${containerName} || true" // Ignore errors if container doesn't exist
@@ -22,12 +32,17 @@ pipeline {
         }
         stage('Build image') {
             steps {
-                sh "docker build -t ${containerName} /home/ubuntu/ea-k8s/kafka-app/consumer"
+                sh "docker build -t ${containerName} /home/ubuntu/workspace/ea-eks-kafka-consumer/ea-k8s/kafka-app/consumer"
             }
         }
         stage('Run container') {
             steps {
                 sh "docker run -d -p 3000:3000 --name ${containerName} ${containerName}"
+            }
+        }
+        stage('Git repository deletion after run') {
+            steps {
+                sh "rm -rf /home/ubuntu/workspace/ea-eks-kafka-consumer/ea-k8s"
             }
         }
     }
