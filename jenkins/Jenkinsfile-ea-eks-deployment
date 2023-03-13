@@ -1,0 +1,46 @@
+pipeline {
+    agent {
+        label 'ubuntu-deployment'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], 
+                    userRemoteConfigs: [[url: 'https://github.com/erdenayates/ea-k8s']]])
+            }
+        }
+
+        stage('Trigger Jobs') {
+            steps {
+                script {
+                    def commitMessage = sh(returnStdout: true, script: 'git log -1 --pretty=%B').trim()
+                    echo "Commit message: ${commitMessage}"
+                    
+                    if (commitMessage.contains('consumer')) {
+                        build job: 'ea-eks-kafka-consumer'
+                    }
+                    
+                    if (commitMessage.contains('producer')) {
+                        build job: 'ea-eks-kafka-producer'
+                    }
+                    
+                    if (commitMessage.contains('backend')) {
+                        build job: 'ea-eks-mongodb-backend'
+                    }
+                    
+                    if (commitMessage.contains('frontend')) {
+                        build job: 'ea-eks-mongodb-frontend'
+                    }
+                    if (commitMessage.contains("all")) {
+                        build job: 'ea-eks-kafka-consumer'
+                        build job: 'ea-eks-kafka-producer'
+                        build job: 'ea-eks-mongodb-backend'
+                        build job: 'ea-eks-mongodb-frontend'
+                    }
+                }
+            }
+        }
+    }
+}
+
