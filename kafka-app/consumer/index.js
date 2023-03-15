@@ -7,10 +7,6 @@ const app = express();
 
 app.use(express.static('public'));
 
-const server = https.createServer({
-  // Replace with your AWS-managed SSL certificate
-}, app);
-
 const wss = new WebSocket.Server({ server });
 
 const kafka = new Kafka({
