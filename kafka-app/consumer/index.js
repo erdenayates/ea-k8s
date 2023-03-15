@@ -8,8 +8,32 @@ const app = express();
 app.use(express.static('public'));
 
 const server = http.createServer(app);
-const wss = new WebSocket.Server({ server, clientTracking: true, secure: true });
 
+const wss = new WebSocket.Server({
+  server,
+  clientTracking: true,
+  perMessageDeflate: false,
+  verifyClient: (info, done) => {
+    // Check if the request comes from an allowed origin
+    const allowedOrigins = ["https://consumer.erdenayat.es"];
+    const origin = info.origin || info.req.headers.origin;
+    if (!allowedOrigins.includes(origin)) {
+      done(false, 403, "Forbidden");
+      return;
+    }
+
+    // Check if the request comes from an authorized user
+    const authorizedUsers = ["user1", "user2"];
+    const username = info.req.headers["x-username"];
+    if (!authorizedUsers.includes(username)) {
+      done(false, 401, "Unauthorized");
+      return;
+    }
+
+    done(true);
+  },
+  secure: true
+});
 
 const kafka = new Kafka({
   clientId: 'my-app',
