@@ -1,18 +1,13 @@
 const express = require('express');
-const https = require('https');
+const http = require('http');
 const WebSocket = require('ws');
 const { Kafka } = require('kafkajs');
-const fs = require('fs');
 
 const app = express();
 
 app.use(express.static('public'));
 
-const server = https.createServer({
-  cert: fs.readFileSync('/path/to/cert.pem'),
-  key: fs.readFileSync('/path/to/key.pem'),
-}, app);
-
+const server = http.createServer(app);
 const wss = new WebSocket.Server({ server, clientTracking: true, secure: true });
 
 
