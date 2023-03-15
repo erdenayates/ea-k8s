@@ -1,6 +1,6 @@
 const express = require('express');
 const http = require('http');
-const WebSocket = require('ws');
+const WebSocket = require('wss');
 const { Kafka } = require('kafkajs');
 
 const app = express();
@@ -8,7 +8,7 @@ const app = express();
 app.use(express.static('public'));
 
 const server = http.createServer(app);
-const wss = new WebSocket.Server({ server, clientTracking: true, secure: true });
+const wss = new WebSocket.Server({ server });
 
 const kafka = new Kafka({
   clientId: 'my-app',
