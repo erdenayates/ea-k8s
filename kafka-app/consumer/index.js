@@ -1,13 +1,37 @@
 const express = require('express');
+const http = require('http');
 const https = require('https');
 const WebSocket = require('ws');
-const { Kafka } = require('kafkajs');
+const AWS = require('aws-sdk');
 
 const app = express();
 
 app.use(express.static('public'));
 
+const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
+
+const acm = new AWS.ACM();
+
+const params = {
+  CertificateArn: 'arn:aws:acm:us-east-1:982389650543:certificate/21f2cb60-fb30-4da8-9594-b1d6f2c8c6ff',
+};
+
+acm.describeCertificate(params, (err, data) => {
+  if (err) {
+    console.log(err);
+  } else {
+    const options = {
+      cert: data.Certificate,
+      key: data.PrivateKey,
+    };
+
+    const server = https.createServer(options, app);
+    server.listen(3000, () => {
+      console.log('Server started on port 3000');
+    });
+  }
+});
 
 const kafka = new Kafka({
   clientId: 'my-app',
@@ -47,7 +71,3 @@ async function run() {
 }
 
 run().catch(console.error);
-
-server.listen(3000, () => {
-  console.log('Server started on port 3000');
-});
