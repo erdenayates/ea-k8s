@@ -2,7 +2,7 @@ const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
 const { Kafka } = require('kafkajs');
-const socket = new WebSocket('wss://consuner.erdenayat.es'); // use the secure wss:// protocol instead of ws://
+const socket = new WebSocket('wss://consumer.erdenayat.es'); // use the secure wss:// protocol instead of ws://
 
 
 const app = express();
