@@ -18,4 +18,4 @@ COPY . .
 EXPOSE 3002
 
 # Start the application
-CMD ["npm", "start"]
+CMD ["npm", "run", "start:secure"]
