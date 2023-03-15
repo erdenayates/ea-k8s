@@ -13,7 +13,8 @@ const server = https.createServer({
   key: fs.readFileSync('/path/to/key.pem'),
 }, app);
 
-const wss = new WebSocket.Server({ server });
+const wss = new WebSocket.Server({ server, clientTracking: true, secure: true });
+
 
 const kafka = new Kafka({
   clientId: 'my-app',
