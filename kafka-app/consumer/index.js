@@ -3,6 +3,7 @@ const http = require('http');
 const https = require('https');
 const WebSocket = require('ws');
 const AWS = require('aws-sdk');
+const { Kafka } = require('kafkajs');
 
 const app = express();
 
