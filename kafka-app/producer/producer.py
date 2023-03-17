@@ -5,7 +5,7 @@ topic = 'msk-topic'
 
 
 producer = KafkaProducer(bootstrap_servers=[
-                         'b-1.erdenaymks.dibkfn.c13.kafka.us-east-1.amazonaws.com:9092', 'b-2.erdenaymks.dibkfn.c13.kafka.us-east-1.amazonaws.com:9092'])
+                         '3.211.121.172:29092'])
 
 app = Flask(__name__)
 

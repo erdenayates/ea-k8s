@@ -12,7 +12,7 @@ const wss = new WebSocket.Server({ server });
 
 const kafka = new Kafka({
   clientId: 'my-app',
-  brokers: ['b-2.eamskcluster.92wrgm.c13.kafka.us-east-1.amazonaws.com:9092', 'b-1.eamskcluster.92wrgm.c13.kafka.us-east-1.amazonaws.com:9092']
+  brokers: ['3.211.121.172:29092']
 });
 
 const consumer = kafka.consumer({ groupId: 'test-group' });
