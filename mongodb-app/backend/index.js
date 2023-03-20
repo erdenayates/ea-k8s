@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const { MongoClient } = require('mongodb');
 const mongoose = require('mongoose');
+const https = require('https');
 
 const app = express();
 const port = 3002;
@@ -42,5 +43,5 @@ app.get('/users', async (req, res) => {
 
 // Start the server
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+  console.log(`Server running at https://localhost:${port}`);
 });
