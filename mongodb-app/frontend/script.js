@@ -1,7 +1,7 @@
 // Fetch the user data from the backend
 axios.get('https://backend.erdenayat.es/users')
   .then(response => {
-    // Populate the table with the user data 
+    // Populate the table with the user data
     const userTable = document.getElementById('user-table');
 
     response.data.forEach(user => {
