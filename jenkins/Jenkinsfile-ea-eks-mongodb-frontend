@@ -1,3 +1,5 @@
+def version = 1
+
 pipeline {
     agent {
         label 'ubuntu-jenkins'
@@ -7,12 +9,13 @@ pipeline {
         containerName = sh(script: 'echo ${JOB_NAME} | tr \'[:upper:]\' \'[:lower:]\' | tr \'_\' \'-\'', returnStdout: true).trim()
         // Extract container name from job name, convert to lowercase, and replace underscores with hyphens
         slackUrl = credentials('slack-webhook-url')
+        imageName = "${containerName}:1.${env.BUILD_ID}"
     }
 
     stages {
         stage('Git repository deletion') {
             steps {
-                sh "rm -rf /home/ubuntu/workspace/ea-eks-mongodb-frontend/ea-k8s"
+                sh "rm -rf /home/ubuntu/workspace/ea-eks-mongodb-backend/ea-k8s"
             }
         }
         stage('Git repository clone') {
@@ -32,27 +35,27 @@ pipeline {
         }
         stage('Build image') {
             steps {
-                sh "docker build -t ${containerName} /home/ubuntu/workspace/ea-eks-mongodb-frontend/ea-k8s/mongodb-app/frontend"
+                sh "docker build -t ${imageName} /home/ubuntu/workspace/ea-eks-mongodb-backend/ea-k8s/mongodb-app/backend"
             }
         }
         stage('Run container') {
             steps {
-                sh "docker run -d -p 81:80 --name ${containerName} ${containerName}"
+                sh "docker run -d -p 3002:3002 --name ${containerName} ${imageName}"
             }
         }
         stage('Git repository deletion after run') {
             steps {
-                sh "rm -rf /home/ubuntu/workspace/ea-eks-mongodb-frontend/ea-k8s"
+                sh "rm -rf /home/ubuntu/workspace/ea-eks-mongodb-backend/ea-k8s"
             }
         }
     }
 
     post {
         success {
-            slackSend color: '#36a64f', message: "Container (${containerName}) update succeeded!", slackUrl: slackUrl
+            slackSend color: '#36a64f', message: "Container (${imageName}) update succeeded!", slackUrl: slackUrl
         }
         failure {
-            slackSend color: '#ff0000', message: "Container (${containerName}) update failed!", slackUrl: slackUrl
+            slackSend color: '#ff0000', message: "Container (${imageName}) update failed!", slackUrl: slackUrl
         }
     }
 }
