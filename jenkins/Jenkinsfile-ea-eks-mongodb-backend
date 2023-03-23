@@ -1,5 +1,3 @@
-def version = 1
-
 pipeline {
     agent {
         label 'ubuntu-jenkins'
@@ -9,7 +7,8 @@ pipeline {
         containerName = sh(script: 'echo ${JOB_NAME} | tr \'[:upper:]\' \'[:lower:]\' | tr \'_\' \'-\'', returnStdout: true).trim()
         // Extract container name from job name, convert to lowercase, and replace underscores with hyphens
         slackUrl = credentials('slack-webhook-url')
-        imageName = "${containerName}:1.${env.BUILD_ID}"
+        gitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+        imageName = "${containerName}:${gitHash}"
     }
 
     stages {

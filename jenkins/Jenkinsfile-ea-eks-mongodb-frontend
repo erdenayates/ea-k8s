@@ -1,5 +1,3 @@
-def version = 1
-
 pipeline {
     agent {
         label 'ubuntu-jenkins'
