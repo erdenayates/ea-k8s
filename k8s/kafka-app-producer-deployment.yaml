@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: kafka-producer
-        image: 982389650543.dkr.ecr.us-west-2.amazonaws.com/ea-eks-kafka-producer:latest
+        image: gcr.io/ea-k8s/kafka-producer:latest
         ports:
         - containerPort: 3001
         resources:

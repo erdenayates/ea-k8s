@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: kafka-consumer
-        image: 982389650543.dkr.ecr.us-west-2.amazonaws.com/ea-eks-kafka-consumer:latest
+        image: gcr.io/ea-k8s/kafka-consumer:latest
         ports:
         - containerPort: 3000
         resources:
