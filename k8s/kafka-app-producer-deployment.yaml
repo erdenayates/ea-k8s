@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: kafka-producer
-        image: gcr.io/ea-k8s/kafka-producer:latest
+        image: gcr.io/ea-k8s-381622/kafka-producer:latest
         ports:
         - containerPort: 3001
         resources:

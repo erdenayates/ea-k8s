@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: kafka-consumer
-        image: gcr.io/ea-k8s/kafka-consumer:latest
+        image: gcr.io/ea-k8s-381622/kafka-consumer:latest
         ports:
         - containerPort: 3000
         resources:
