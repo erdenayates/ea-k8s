@@ -19,10 +19,3 @@ spec:
         image: gcr.io/ea-k8s-381622/kafka-producer:latest
         ports:
         - containerPort: 3001
-        resources:
-          limits:
-            cpu: "500m"
-            memory: "256Mi"
-          requests:
-            cpu: "250m"
-            memory: "128Mi"
