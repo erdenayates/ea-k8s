@@ -1,11 +1,11 @@
 from kafka import KafkaProducer
 from flask import Flask, request, render_template
 
-topic = 'msk-topic'
+topic = 'test'
 
 
 producer = KafkaProducer(bootstrap_servers=[
-                         '3.211.121.172:29092'])
+                         '34.71.246.184:9092'])
 
 app = Flask(__name__)
 

@@ -12,14 +12,14 @@ const wss = new WebSocket.Server({ server });
 
 const kafka = new Kafka({
   clientId: 'my-app',
-  brokers: ['3.211.121.172:29092']
+  brokers: ['34.71.246.184:9092']
 });
 
 const consumer = kafka.consumer({ groupId: 'test-group' });
 
 async function run() {
   await consumer.connect();
-  await consumer.subscribe({ topic: 'msk-topic', fromBeginning: true });
+  await consumer.subscribe({ topic: 'test', fromBeginning: true });
 
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
